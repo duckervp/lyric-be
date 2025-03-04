@@ -40,6 +40,14 @@ pipeline {
             }
         }
 
+        stage('Docker Deploy') {
+            steps {
+                echo '===========Docker Deploy [START]==========='
 
+                sh 'ls'
+
+                echo '===========Docker Deploy [DONE]==========='
+            }
+        }
     }
 }
