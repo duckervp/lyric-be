@@ -13,8 +13,9 @@ services:
   lyric-app:
     image: duckervn/lyric-be
     ports:
-      - "8081:8080"
+      - "8888:8888"
     environment:
+      SERVER_PORT: 8888
       MYSQL_HOST: mysql-db
       MYSQL_PORT: 3306
       MYSQL_USER: root

@@ -15,4 +15,4 @@ spring:
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
 server:
-  port: 8888
+  port: ${SERVER_PORT}
