@@ -28,13 +28,15 @@ pipeline {
 
                 sh 'docker -v'
 
-                withCredentials([string(credentialsId: 'dockerhub_psw', variable: 'dockerhub_psw')]) {
-                    sh 'docker login -u duckervn -p ${dockerhub_psw}'
+                sh 'docker build -t duckervn/lyric-be .'
 
-                    sh 'docker build -t duckervn/lyric-be .'
-
-                    sh 'docker push duckervn/lyric-be'
-                }
+//                 withCredentials([string(credentialsId: 'dockerhub_psw', variable: 'dockerhub_psw')]) {
+//                     sh 'docker login -u duckervn -p ${dockerhub_psw}'
+//
+//                     sh 'docker build -t duckervn/lyric-be .'
+//
+//                     sh 'docker push duckervn/lyric-be'
+//                 }
 
                 echo '===========Docker Build [DONE]==========='
             }
