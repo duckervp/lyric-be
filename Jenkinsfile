@@ -44,7 +44,7 @@ pipeline {
             steps {
                 echo '===========Docker Deploy [START]==========='
 
-                sh 'ls'
+                sh 'docker compose up -d'
 
                 echo '===========Docker Deploy [DONE]==========='
             }
