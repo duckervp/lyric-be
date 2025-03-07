@@ -1,8 +1,9 @@
-package com.ducker.lyric.controller;
+package com.ducker.lyric.rest;
 
-import com.ducker.lyric.model.request.SongFilterRequest;
-import com.ducker.lyric.model.request.SongRequest;
-import com.ducker.lyric.model.response.SongResponse;
+import com.ducker.lyric.base.WebConstants;
+import com.ducker.lyric.dto.request.SongFilterRequest;
+import com.ducker.lyric.dto.request.SongRequest;
+import com.ducker.lyric.dto.response.SongResponse;
 import com.ducker.lyric.service.SongService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.web.PagedModel;
@@ -10,9 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("songs")
+@RequestMapping(WebConstants.API_ARTIST_PREFIX_V1)
 @RequiredArgsConstructor
-public class SongController {
+public class ArtistController {
     private final SongService songService;
 
     @GetMapping

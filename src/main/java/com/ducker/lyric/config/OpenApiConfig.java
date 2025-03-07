@@ -1,5 +1,7 @@
 package com.ducker.lyric.config;
 
+import com.ducker.lyric.base.WebConstants;
+import com.ducker.lyric.config.property.SpringDocProperty;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -17,13 +19,13 @@ import org.springframework.web.filter.ForwardedHeaderFilter;
 @RequiredArgsConstructor
 class OpenApiConfig {
 
-//    private final SpringDocProperty springDocProperty;
+    private final SpringDocProperty springDocProperty;
 
     @Bean
     public OpenAPI customOpenAPI() {
         final String securitySchemeName = "bearerAuth";
         return new OpenAPI()
-                .addServersItem(new Server().url("http://localhost:8888"))
+                .addServersItem(new Server().url(springDocProperty.getServerUrl()))
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(
                         new Components()
@@ -36,8 +38,8 @@ class OpenApiConfig {
                                 )
                 )
                 .info(new Info()
-                        .title("Dirty Clothes Shop API")
-                        .version("2.2.0")
+                        .title("Lyric")
+                        .version(springDocProperty.getVersion())
                         .termsOfService("https://swagger.io/terms/")
                         .license(new License().
                                 name("Apache 2.0").
@@ -46,12 +48,22 @@ class OpenApiConfig {
     }
 
     @Bean
+    public GroupedOpenApi authApi() {
+        return GroupedOpenApi.builder()
+                .group("Authentication")
+                .pathsToMatch(WebConstants.API_AUTH_PREFIX_V1 + "/**")
+                .build();
+    }
+
+    @Bean
     public GroupedOpenApi businessApi() {
         return GroupedOpenApi.builder()
                 .group("Lyric APIs")
-                .pathsToMatch("/**")
+                .pathsToMatch(WebConstants.API_BASE_PREFIX_V1 + "/**")
+                .pathsToExclude(WebConstants.API_AUTH_PREFIX_V1 + "/**")
                 .build();
     }
+
 
     /**
      * Forward HTTPS requests to Swagger UI

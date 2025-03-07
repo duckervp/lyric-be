@@ -1,4 +1,4 @@
-package com.ducker.lyric.model.request;
+package com.ducker.lyric.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,6 +20,8 @@ public class SongRequest {
     private String description;
 
     private String artist;
+
+    private List<SongArtistRequest> artists;
 
     private String lyric;
 

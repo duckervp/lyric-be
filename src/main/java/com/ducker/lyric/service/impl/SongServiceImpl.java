@@ -1,10 +1,13 @@
 package com.ducker.lyric.service.impl;
 
-import com.ducker.lyric.entity.Song;
+import com.ducker.lyric.model.Song;
+import com.ducker.lyric.model.SongArtist;
+import com.ducker.lyric.dto.request.SongFilterRequest;
+import com.ducker.lyric.dto.request.SongRequest;
+import com.ducker.lyric.dto.response.SongResponse;
+import com.ducker.lyric.enums.apicode.CommonApiCode;
 import com.ducker.lyric.exception.ApiException;
-import com.ducker.lyric.model.request.SongFilterRequest;
-import com.ducker.lyric.model.request.SongRequest;
-import com.ducker.lyric.model.response.SongResponse;
+import com.ducker.lyric.repository.SongArtistRepository;
 import com.ducker.lyric.repository.SongRepository;
 import com.ducker.lyric.service.SongService;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +18,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class SongServiceImpl implements SongService {
     private final SongRepository songRepository;
+
+    private final SongArtistRepository songArtistRepository;
 
     @Override
     public void save(SongRequest request) {
@@ -31,6 +38,15 @@ public class SongServiceImpl implements SongService {
                 .releasedAt(request.getReleasedAt())
                 .build();
         songRepository.save(song);
+
+        List<SongArtist> artists = request.getArtists().stream()
+                .map(artist -> SongArtist.builder()
+                        .songId(song.getId())
+                        .artistId(artist.getArtistId())
+                        .type(artist.getType())
+                        .build()).toList();
+
+        songArtistRepository.saveAll(artists);
     }
 
     @Override
@@ -70,8 +86,7 @@ public class SongServiceImpl implements SongService {
         if (!Boolean.TRUE.equals(request.getUnpaged())) {
             pageable = PageRequest.of(request.getPageNo(), request.getPageSize(), sort);
         }
-        Page<Song> result = songRepository.findByTitleContainingIgnoreCaseOrArtistContainingIgnoreCase(
-                request.getTitle(), request.getArtist(), pageable);
+        Page<Song> result = songRepository.findByTitleContainsIgnoreCase(request.getTitle(), pageable);
         return new PagedModel<>(result.map(SongResponse::from));
     }
 
@@ -88,6 +103,6 @@ public class SongServiceImpl implements SongService {
     }
 
     private Song findById(Long id) {
-        return songRepository.findById(id).orElseThrow(ApiException::new);
+        return songRepository.findById(id).orElseThrow(() -> new ApiException(CommonApiCode.NOT_FOUND));
     }
 }

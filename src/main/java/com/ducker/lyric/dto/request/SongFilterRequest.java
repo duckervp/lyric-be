@@ -1,11 +1,9 @@
-package com.ducker.lyric.model.request;
+package com.ducker.lyric.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.Instant;
 
 @Getter
 @Setter
@@ -13,16 +11,6 @@ import java.time.Instant;
 @AllArgsConstructor
 public class SongFilterRequest {
     private String title;
-
-    private String coverUrl;
-
-    private String description;
-
-    private String artist;
-
-    private String lyric;
-
-    private Instant releasedAt;
 
     private Integer pageNo = 0;
 

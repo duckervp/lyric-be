@@ -1,7 +1,9 @@
-package com.ducker.lyric.entity;
+package com.ducker.lyric.model;
 
+import com.ducker.lyric.base.BaseModel;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.Instant;
 
@@ -11,7 +13,8 @@ import java.time.Instant;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Song {
+@SQLRestriction(value = "is_deleted = false")
+public class Song extends BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

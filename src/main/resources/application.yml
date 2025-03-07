@@ -1,3 +1,6 @@
+server:
+  port: ${SERVER_PORT}
+
 spring:
   application:
     name: lyric
@@ -8,11 +11,38 @@ spring:
     properties:
       hibernate:
         format_sql: true
-    database-platform: org.hibernate.dialect.MySQL8Dialect
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/lyric?createDatabaseIfNotExist=true
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/lyric?autoReconnect=true&allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
-server:
-  port: ${SERVER_PORT}
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+auth:
+  token-secret: ${AUTH_TOKEN_SECRET}
+  access-token-expiration-mils: 86400000
+  refresh-token-expiration-mils: 259200000
+  verify-email-token-expiration-mils: 86400000
+
+springdoc:
+  api-docs:
+    enabled: ${ENABLE_SWAGGER}
+  swagger-ui:
+    enabled: ${ENABLE_SWAGGER}
+    showExtensions: true
+    showCommonExtensions: true
+    display-request-duration: true
+    groups-order: DESC
+    disable-swagger-default-url: true
+    use-root-path: true
+  use-fqn: false #show class in detail
+  version: '@springdoc.version@'
+  server-url: ${PROD_URL}
+
+file:
+  rootPath: public/uploads
+  domain: ${PROD_URL}

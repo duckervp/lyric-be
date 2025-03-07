@@ -1,6 +1,6 @@
-package com.ducker.lyric.model.response;
+package com.ducker.lyric.dto.response;
 
-import com.ducker.lyric.entity.Song;
+import com.ducker.lyric.model.Song;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
